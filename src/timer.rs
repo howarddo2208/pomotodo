@@ -2,22 +2,22 @@ use indicatif::{ProgressBar, ProgressStyle};
 use std::thread;
 use std::time::Duration;
 
-enum Timer {
+enum TimerType {
     Pomodoro,
     Break,
 }
 
-fn run_timer(duration: f32, timer: Timer) -> Result<(), Box<dyn std::error::Error>> {
+fn run_timer(duration: f32, timer_type: TimerType) -> Result<(), Box<dyn std::error::Error>> {
     let seconds = (duration * 60.0) as u64;
 
     let pb = ProgressBar::new(seconds);
-    match timer {
-        Timer::Pomodoro => {
+    match timer_type {
+        TimerType::Pomodoro => {
             pb.set_style(ProgressStyle::with_template(
                 "🍅 [{elapsed}] [{wide_bar:.cyan/blue}] ({eta})",
             )?);
         }
-        Timer::Break => {
+        TimerType::Break => {
             pb.set_style(ProgressStyle::with_template(
                 "☕ [{elapsed}] [{wide_bar:.yellow/orange}] ({eta})",
             )?);
@@ -33,12 +33,12 @@ fn run_timer(duration: f32, timer: Timer) -> Result<(), Box<dyn std::error::Erro
 }
 
 pub fn run_pomodoro(duration: f32) -> Result<(), Box<dyn std::error::Error>> {
-    run_timer(duration, Timer::Pomodoro)?;
+    run_timer(duration, TimerType::Pomodoro)?;
     Ok(())
 }
 
 pub fn run_break(duration: f32) -> Result<(), Box<dyn std::error::Error>> {
-    run_timer(duration, Timer::Break)?;
+    run_timer(duration, TimerType::Break)?;
     Ok(())
 }
 
